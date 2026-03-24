@@ -1,3 +1,5 @@
+
+
 import json
 import sys
 from datetime import datetime
@@ -16,15 +18,25 @@ def save_tasks(tasks):
         json.dump(tasks, file, indent=4)
 
 
-def add_tasks(description):
+def list_tasks(status):
+    tasks = load_tasks()
 
+    if status == "all":
+        for t in tasks:
+            print(f"Task {t["id"]}: {t["description"]}")
+
+    else:
+        for t in tasks:
+            if t["status"] == status:
+                print(f"Task {t["id"]}: {t["description"]}")
+
+def add_tasks(description):
     tasks = load_tasks()                
 
     if tasks:
         task_id = max(task["id"] for task in tasks) + 1
     else:
         task_id = 1  
-
 
     new_task = {
         "id": task_id, 
@@ -39,8 +51,6 @@ def add_tasks(description):
 
     print(f"Task added successfully (ID: {new_task['id']})")
 
-def remove_tasks():
-    pass
 
 def update_tasks(id, new_description):
     tasks = load_tasks()
@@ -124,6 +134,13 @@ def process():
     elif command == "remove":
         id = int(args[0])
         remove(id)
+
+    elif command == "list":
+        if len(args) == 0:
+            list_tasks("all")
+        else:
+            print(args[0])
+            list_tasks(args[0])
 
 def main():
     process()
