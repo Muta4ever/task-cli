@@ -65,6 +65,24 @@ def mark(id, statusID):
         
     print(f"Task {id} not found")
 
+def remove(id):
+    tasks  = load_tasks()
+    if len(tasks) <= 0:
+        print("There are no tasks")
+        return
+    
+    elif id < 0:
+        print("No tasks with negative indices")
+        return 
+    
+    for i in range(len(tasks)):
+        if tasks[i]["id"] == id:
+            tasks.pop(i)
+            print(f"Task {id} removed")
+            save_tasks(tasks)
+            return
+
+    print(f"Task {id} not found")
 
 def print_help():
     print("""
@@ -102,6 +120,10 @@ def process():
     elif command == "mark-done":
         id = int(args[0])
         mark(id, 2)
+    
+    elif command == "remove":
+        id = int(args[0])
+        remove(id)
 
 def main():
     process()
