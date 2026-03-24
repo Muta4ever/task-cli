@@ -2,6 +2,8 @@ import json
 import sys
 from datetime import datetime
 
+status_list = ["todo", "in-progress", "done"]
+
 def load_tasks():
     try:
         with open("tasks.json", "r") as file:
@@ -17,7 +19,13 @@ def save_tasks(tasks):
 def add_tasks(description):
 
     tasks = load_tasks()                
-    task_id = len(tasks) + 1             
+
+    if tasks:
+        task_id = max(task["id"] for task in tasks) + 1
+    else:
+        task_id = 1  
+
+
     new_task = {
         "id": task_id, 
         "description": description, 
@@ -34,27 +42,28 @@ def add_tasks(description):
 def remove_tasks():
     pass
 
-def update_tasks(id, description):
-
+def update_tasks(id, new_description):
     tasks = load_tasks()
-    id_pos = id - 1
+    for t in tasks:
+        if t["id"] == id:
+            t["description"] = new_description
+            t["updatedAt"] = str(datetime.now())
+            print(f"Task {id} updated")
+            save_tasks(tasks)
+            return
+        
+    print(f"Task {id} not found")
 
-    tasks[id_pos]["description"] = description
-    tasks[id_pos]["updatedAt"] = str(datetime.now())
-
-    save_tasks(tasks)
-
-def list_tasks():
-    pass
-
-def list_done_taks():
-    pass
-
-def list_not_done_tasks():
-    pass
-
-def list_in_progress_tasks():
-    pass
+def mark(id, statusID):
+    tasks = load_tasks()
+    for t in tasks:
+        if t["id"] == id:
+            t["status"] = status_list[statusID]
+            print(f"Task {id} marked '{status_list[statusID]}'")
+            save_tasks(tasks)
+            return
+        
+    print(f"Task {id} not found")
 
 
 def print_help():
@@ -85,6 +94,14 @@ def process():
         id = int(args[0])
         description = args[1]
         update_tasks(id,description)
+
+    elif command == "mark-in-progress":
+        id = int(args[0])
+        mark(id, 1)
+
+    elif command == "mark-done":
+        id = int(args[0])
+        mark(id, 2)
 
 def main():
     process()
