@@ -1,16 +1,9 @@
 [
     {
         "id": 1,
-        "description": "Buy stuff",
-        "status": "done",
-        "createdAt": "2026-03-24 18:04:12.128403",
-        "updatedAt": "2026-03-24 18:04:12.128411"
-    },
-    {
-        "id": 2,
-        "description": "Buy extra stuff",
+        "description": "Buy groceries",
         "status": "todo",
-        "createdAt": "2026-03-24 18:04:50.612509",
-        "updatedAt": "2026-03-24 18:04:50.612517"
+        "createdAt": "2026-03-24 18:55:35.591149",
+        "updatedAt": "2026-03-24 18:55:35.591149"
     }
 ]
